@@ -6,15 +6,17 @@
  * @flow strict-local
  */
 
-import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
+  Image,
   Text,
   StatusBar,
 } from 'react-native';
+
+import React, {Fragment, Component} from "react";
 
 import {
   Header,
@@ -24,91 +26,61 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+class App extends Component{
+  render(){
+    return (
+      <View style = {{flex : 1}}>
+          <View style = {styles.container}>
+              <Image source={require('./assets/IronMan.jpg')} style = {{width:100, height: 100}}/>
+
+              <View style = {{flexDirection : 'column'}}>
+                  <View style = {{flexDirection: 'row'}}>
+                      <Text style = {styles.title}>활동연대</Text>
+                      <Text style = {styles.detail}>2000, 2010</Text>
+                  </View>
+                  <View style = {{flexDirection: 'row'}}>
+                      <Text style = {styles.title}>출생</Text>
+                      <Text style = {styles.detail}>2000, 2010</Text>
+                  </View>
+                  <View style = {{flexDirection: 'row'}}>
+                      <Text style = {styles.title}>활동연대</Text>
+                      <Text style = {styles.detail}>2000, 2010</Text>
+                  </View>
+                  <View style = {{flexDirection: 'row'}}>
+                      <Text style = {styles.title}>활동연대</Text>
+                      <Text style = {styles.detail}>2000, 2010</Text>
+                  </View>
+              </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+
+          <View style = {{width : 50, height : 50, backgroundColor : 'red'}}></View>
+          <View style = {{flex : 1, backgroundColor : 'yellow'}}>
+              <View style ={{flex : 1}}></View>
+              <View style ={{flex : 1, backgroundColor : 'skyblue'}}></View>
+              <View style = {{flex : 1, backgroundColor : 'red'}}></View>
+          </View>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+    container : {
+      marginTop : 50,
+      marginLeft : 20,
+      flexDirection : 'row',
+      width : 500,
+      height : 200,
+    },
+    title : {
+        marginLeft: 10,
+        fontWeight: 'bold',
+        color : 'gray',
+    },
+    detail : {
+        marginLeft : 10
+    }
+
 });
 
 export default App;
