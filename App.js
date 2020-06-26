@@ -30,24 +30,33 @@ function HomeScreen({navigation}) {
       <Text>안녕하세요 HomeScreen 테스트입니다.</Text>
       <Button
         title="프로필 페이지로 이동"
-        onPress={() => navigation.navigate('Profile')}
+        onPress={() =>
+          navigation.navigate('Profile', {
+            itemId: 86,
+            otherParam: 'anything you want here',
+          })
+        }
       />
     </View>
   );
 }
-function ProfileScreen({navigation}) {
+function ProfileScreen({route, navigation}) {
+  const {itemId} = route.params;
+  const {otherParam} = route.params;   // const otherParam = route.paramse.otherParam;
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>안녕하세요 ProfileScreen 테스트입니다.</Text>
+        <Text>itemId: {JSON.stringify(itemId)}</Text>
+        <Text>otherParam: {JSON.stringify(otherParam)}</Text>
+        <Button title="홈 페이지로 이동" onPress={() => navigation.push('Profile')} />
+        <Button title="Go back" onPress={() => navigation.goBack()} />
+        <Button title="popToTop" onPress={() => navigation.popToTop()} />
     </View>
   );
 }
 
 const App: () => React$Node = () => {
   return (
-    //<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-     // <Text>안녕하세요 네비게이션 테스트입니다.</Text>
-    // </View>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -55,10 +64,7 @@ const App: () => React$Node = () => {
           component={HomeScreen}
           options={{title: 'Welcome'}}
         />
-        <Stack.Screen
-            name="Profile"
-            component={ProfileScreen}
-        />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
