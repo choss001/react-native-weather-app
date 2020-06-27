@@ -21,13 +21,16 @@ import 'react-native-gesture-handler';
 import {StyleSheet, View, Text, Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import Hook from './Components/Hook';
 
 const Stack = createStackNavigator();
 
-function HomeScreen({navigation}) {
+function HomeScreen({route, navigation}) {
+  const {itemId} = route.params;
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>안녕하세요 HomeScreen 테스트입니다.</Text>
+        <Text>itemId : {itemId}</Text>
       <Button
         title="프로필 페이지로 이동"
         onPress={() =>
@@ -36,6 +39,15 @@ function HomeScreen({navigation}) {
             otherParam: 'anything you want here',
           })
         }
+      />
+      <Button
+          title="Hook을 이용하는 방법"
+          onPress={() =>
+              navigation.navigate('Hook', {
+                itemId: 86,
+                otherParam: 'anything you want here',
+              })
+          }
       />
     </View>
   );
@@ -46,7 +58,7 @@ function ProfileScreen({route, navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>안녕하세요 ProfileScreen 테스트입니다.</Text>
-        <Text>itemId: {JSON.stringify(itemId)}</Text>
+        <Text>itemId: {itemId}</Text>
         <Text>otherParam: {JSON.stringify(otherParam)}</Text>
         <Button title="홈 페이지로 이동" onPress={() => navigation.push('Profile')} />
         <Button title="Go back" onPress={() => navigation.goBack()} />
@@ -63,8 +75,17 @@ const App: () => React$Node = () => {
           name="Home"
           component={HomeScreen}
           options={{title: 'Welcome'}}
+          initialParams={{ itemId : 50}}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+        />
+        <Stack.Screen
+            name="Hook"
+            initialParams={{ itemId : 10000}}
+            component={Hook}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
