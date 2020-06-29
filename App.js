@@ -18,78 +18,64 @@
 
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import {StyleSheet, View, Text, Button, TextInput} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Hook from './Components/Hook';
-
 const Stack = createStackNavigator();
 
-function HomeScreen({route, navigation}) {
-  const {itemId} = route.params;
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>안녕하세요 HomeScreen 테스트입니다.</Text>
-        <Text>itemId : {itemId}</Text>
-      <Button
-        title="프로필 페이지로 이동"
-        onPress={() =>
-          navigation.navigate('Profile', {
-            itemId: 86,
-            otherParam: 'anything you want here',
-          })
+function HomeScreen({navigation, route}) {
+    // const {post} = route.params;
+    React.useEffect(() =>{
+        if(route.params?.post){
+            alert(route.params.post);
         }
-      />
-      <Button
-          title="Hook을 이용하는 방법"
-          onPress={() =>
-              navigation.navigate('Hook', {
-                itemId: 86,
-                otherParam: 'anything you want here',
-              })
-          }
-      />
-    </View>
-  );
-}
-function ProfileScreen({route, navigation}) {
-  const {itemId} = route.params;
-  const {otherParam} = route.params;   // const otherParam = route.paramse.otherParam;
+    }, [route.params?.post]);
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>안녕하세요 ProfileScreen 테스트입니다.</Text>
-        <Text>itemId: {itemId}</Text>
-        <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-        <Button title="홈 페이지로 이동" onPress={() => navigation.push('Profile')} />
-        <Button title="Go back" onPress={() => navigation.goBack()} />
-        <Button title="popToTop" onPress={() => navigation.popToTop()} />
+    <View style={{flex:1, alignItes: 'center', justifyContent: 'center'}}>
+      <Button
+          title="Create post"
+          onPress={() => navigation.navigate('CreatePost')}
+      />
+        {/*<Text>{post}</Text>*/}
+        <Text style ={{ margin : 10}}> Post: {route.params?.post}</Text>
     </View>
   );
 }
 
+
+function CreatePostScreen({ navigation, route}) {
+    const [postText, setPostText] = React.useState('');
+
+    return (
+        <View>
+            <TextInput
+                multiline
+                placeholder="What's on your mind?"
+                style={{ height:200, padding: 10, backgroundColor: 'white'}}
+                value={postText}
+                onChangeText={setPostText}
+            />
+            <Button
+                title='Done'
+                onPress={() => {
+                    navigation.navigate('Home', {post: postText });
+                }}
+            />
+        </View>
+
+    );
+}
 const App: () => React$Node = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Welcome'}}
-          initialParams={{ itemId : 50}}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
-        />
-        <Stack.Screen
-            name="Hook"
-            initialParams={{ itemId : 10000}}
-            component={Hook}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer>
+            <Stack.Navigator mode="modal">
+                <Stack.Screen name="Home" component={HomeScreen}/>
+                <Stack.Screen name="CreatePost" component={CreatePostScreen}/>
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 };
+
 
 const styles = StyleSheet.create({
   container: {
