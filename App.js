@@ -19,80 +19,58 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
 import {StyleSheet, View, Text, Button, TextInput} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-const Stack = createStackNavigator();
+import {NavigationContainer} from "@react-navigation/native";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {IoniconsGlyphs} from "react-native-vector-icons/Ionicons";
 
-function HomeScreen({navigation, route}) {
-    // const {post} = route.params;
-    React.useEffect(() =>{
-        if(route.params?.post){
-            alert(route.params.post);
-        }
-    }, [route.params?.post]);
-  return (
-    <View style={{flex:1, alignItes: 'center', justifyContent: 'center'}}>
-      <Button
-          title="Create post"
-          onPress={() => navigation.navigate('CreatePost')}
-      />
-        {/*<Text>{post}</Text>*/}
-        <Text style ={{ margin : 10}}> Post: {route.params?.post}</Text>
-    </View>
-  );
-}
-
-
-function CreatePostScreen({ navigation, route}) {
-    const [postText, setPostText] = React.useState('');
-
+function HomeScreen(){
     return (
-        <View>
-            <TextInput
-                multiline
-                placeholder="What's on your mind?"
-                style={{ height:200, padding: 10, backgroundColor: 'white'}}
-                value={postText}
-                onChangeText={setPostText}
-            />
-            <Button
-                title='Done'
-                onPress={() => {
-                    navigation.navigate('Home', {post: postText });
-                }}
-            />
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>Home!</Text>
         </View>
-
     );
 }
-const App: () => React$Node = () => {
+
+function SettingScreen(){
+    return(
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>Settings!</Text>
+        </View>
+    );
+}
+
+const Tab = createBottomTabNavigator();
+
+export default function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator mode="modal">
-                <Stack.Screen name="Home" component={HomeScreen}/>
-                <Stack.Screen name="CreatePost" component={CreatePostScreen}/>
-            </Stack.Navigator>
+            <Tab.Navigator
+                screenOptions={({ route}) => ({
+                    tabBarIcon: ({focused, color, size}) => {
+                        let iconName;
+                        if(route.name === 'Home'){
+                            iconName = focused
+                                ? 'ios-information-circle'
+                                : 'ios-information-circle-outline';
+                        } else if (route.name === 'Settings'){
+                            iconName = focused ? 'ios-list-box' : 'ios-list';
+                        }
+                    },
+                })}
+                tabBarOptions={{
+                    activeTintColor: 'tomato',
+                    inactiveTintColor: 'gray',
+                }}
+            >
+                <Tab.Screen name="Home" component={HomeScreen}/>
+                <Tab.Screen name="Settings" component={SettingScreen}/>
+            </Tab.Navigator>
         </NavigationContainer>
     );
 };
 
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 50,
-    marginLeft: 20,
-    flexDirection: 'row',
-    width: 500,
-    height: 200,
-  },
-  title: {
-    marginLeft: 10,
-    fontWeight: 'bold',
-    color: 'gray',
-  },
-  detail: {
-    marginLeft: 10,
-  },
+
 });
 
-export default App;
